@@ -6,79 +6,7 @@
 <title>Filtrage &amp; tri de produits — Coekipia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..500;1,9..144,300..500&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-<style>
-/* ===== Tokens Coekipia ===== */
-:root{
-  --surface:#F7F7F4; --surface-inverse:#101010; --surface-header:rgba(16,16,16,.95);
-  --ink:#0A0A0A; --ink-muted:#555555; --on-inverse:#F7F7F4; --on-inverse-muted:#A8A8A3;
-  --border:#E6E4E0; --tag:#D6D5D5; --accent:#7F77F6; --ok:#2F6B3F; --danger:#B00020;
-  --radius-md:16px; --radius-pill:999px;
-  --serif:"Broock",Fraunces,"Arial Narrow",Georgia,serif;
-  --sans:Montserrat,system-ui,sans-serif;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--surface);color:var(--ink);font:400 16px/26px var(--sans);letter-spacing:-.16px}
-.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
-
-/* Header sticky sombre translucide */
-header.top{position:sticky;top:0;z-index:10;background:var(--surface-header);backdrop-filter:blur(8px);color:var(--on-inverse)}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
-.logo{font:400 28px/34px var(--serif)}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:var(--radius-pill);font:500 15px/20px var(--sans);letter-spacing:-.16px;border:1px solid var(--ink);cursor:pointer;text-decoration:none}
-.pill.primary{background:var(--ink);color:var(--surface)}
-.pill.primary:disabled{opacity:.5;cursor:default}
-
-/* Hero sombre */
-.hero{background:var(--surface-inverse);color:var(--on-inverse);padding:96px 0 64px}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid #2A2A28;border-radius:var(--radius-pill);font-size:14px;line-height:22px;color:var(--on-inverse-muted)}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
-.dot.off{background:#8a8a85}
-.dot.error{background:#e5484d}
-h1{font:400 clamp(44px,7vw,72px)/1.05 var(--serif);letter-spacing:-1px;margin:24px 0 16px}
-h1 em{font-style:italic}
-.hero p{margin:0;color:var(--on-inverse-muted);max-width:520px}
-.backend{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:32px}
-.seg{display:inline-flex;padding:4px;border:1px solid #2A2A28;border-radius:var(--radius-pill)}
-.seg button{all:unset;cursor:pointer;padding:8px 20px;border-radius:var(--radius-pill);font:500 14px/20px var(--sans);color:var(--on-inverse-muted)}
-.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink)}
-.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-
-/* Sections numérotées */
-section{padding:48px 0 0}
-
-/* Formulaire */
-form{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end}
-label{display:flex;flex-direction:column;gap:8px;font-size:14px;line-height:22px;color:var(--ink-muted)}
-select,input{font:400 15px/20px var(--sans);letter-spacing:-.16px;color:var(--ink);background:#fff;border:1px solid var(--border);border-radius:var(--radius-pill);padding:12px 20px;min-width:160px}
-select:focus-visible,input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-input::placeholder{color:var(--ink-muted)}
-
-/* Erreur */
-#error{margin-top:16px;color:var(--danger);font-size:14px;line-height:22px}
-#error:empty{display:none}
-
-/* Chiffres clés */
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
-.stat{border:1px solid var(--border);border-radius:var(--radius-md);padding:24px}
-.stat b{display:block;font:400 64px/64px var(--serif);letter-spacing:-2px;font-variant-numeric:tabular-nums}
-.stat span{display:block;margin-top:16px;color:var(--ink-muted);font-size:14px;line-height:22px}
-
-/* Tableau */
-.tw{border:1px solid var(--border);border-radius:var(--radius-md);overflow:auto;background:#fff;margin-top:32px}
-table{width:100%;border-collapse:collapse;font-size:15px}
-th{text-align:left;font-weight:500;font-size:13px;color:var(--ink-muted);padding:16px 20px;border-bottom:1px solid var(--border);background:var(--surface);white-space:nowrap}
-th.sorted{color:var(--ink)}
-td{padding:16px 20px;border-bottom:1px solid var(--border)}
-tr:last-child td{border-bottom:0}
-td.num{font-variant-numeric:tabular-nums}
-.tag{display:inline-block;padding:2px 10px;border-radius:6px;background:var(--tag);font-size:13px;line-height:22px}
-.low{font-weight:500}.low::before{content:"";display:inline-block;width:6px;height:6px;background:var(--accent);margin-right:8px}
-.empty{padding:48px;text-align:center;color:var(--ink-muted)}
-
-footer{margin-top:96px;background:var(--surface-inverse);color:var(--on-inverse-muted);padding:32px 0;font-size:14px}
-
-@media(max-width:720px){.stats{grid-template-columns:1fr}.hero{padding:64px 0 48px}}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -111,7 +39,8 @@ footer{margin-top:96px;background:var(--surface-inverse);color:var(--on-inverse-
       </label>
       <label>
         Valeur
-        <input id="filterValue" type="text" placeholder="ex: Electronique" />
+        <input id="filterValue" type="text" placeholder="ex: Electronique" list="filterValueList" autocomplete="off" />
+        <datalist id="filterValueList"></datalist>
       </label>
       <label>
         Trier par
@@ -146,146 +75,6 @@ footer{margin-top:96px;background:var(--surface-inverse);color:var(--on-inverse-
 
 <footer><div class="wrap">Coekipia · Filtrage &amp; tri de produits</div></footer>
 
-<script>
-  // Contrat commun aux deux backends (Node/TypeScript et Java) :
-  //  GET /api/products/fields
-  //  GET /api/products?filterField=&filterValue=&sortField=&sortOrder=asc|desc
-  // Le front est identique quel que soit le backend choisi ; seul le port change
-  // (Node: 3000, Java: 3001), sélectionnable via les boutons de bascule.
-  let API_BASE = 'http://localhost:3000';
-
-  const filterFieldSelect = document.getElementById('filterField');
-  const filterValueInput = document.getElementById('filterValue');
-  const sortFieldSelect = document.getElementById('sortField');
-  const sortOrderSelect = document.getElementById('sortOrder');
-  const tableHead = document.getElementById('table-head');
-  const tableBody = document.getElementById('table-body');
-  const errorBox = document.getElementById('error');
-  const backendStatus = document.getElementById('backend-status');
-  const dot = document.getElementById('dot');
-  const sCount = document.getElementById('s-count');
-  const sPrice = document.getElementById('s-price');
-  const sStock = document.getElementById('s-stock');
-  const backendButtons = [
-    document.getElementById('backend-node-btn'),
-    document.getElementById('backend-java-btn'),
-  ];
-
-  let fields = [];
-
-  async function loadFields() {
-    const res = await fetch(`${API_BASE}/api/products/fields`);
-    const data = await res.json();
-    fields = data.fields;
-
-    filterFieldSelect.innerHTML = '<option value="">(aucun)</option>';
-    sortFieldSelect.innerHTML = '';
-    for (const field of fields) {
-      filterFieldSelect.add(new Option(field.name, field.name));
-      sortFieldSelect.add(new Option(field.name, field.name));
-    }
-  }
-
-  function renderHead() {
-    const sf = sortFieldSelect.value;
-    tableHead.innerHTML = `<tr>${fields
-      .map((f) => `<th class="${f.name === sf ? 'sorted' : ''}">${f.name}</th>`)
-      .join('')}</tr>`;
-  }
-
-  function renderStats(rows) {
-    const n = rows.length;
-    sCount.textContent = n;
-
-    const hasPrice = fields.some((f) => f.name === 'price');
-    sPrice.textContent = hasPrice && n
-      ? (rows.reduce((s, r) => s + Number(r.price || 0), 0) / n).toFixed(0)
-      : '—';
-
-    const hasStock = fields.some((f) => f.name === 'stock');
-    sStock.textContent = hasStock
-      ? rows.reduce((s, r) => s + Number(r.stock || 0), 0)
-      : '—';
-  }
-
-  function renderRows(rows) {
-    tableBody.innerHTML = rows.length
-      ? rows
-          .map((item) => `<tr>${fields
-            .map((f) => {
-              const v = item[f.name];
-              if (f.name === 'category') return `<td><span class="tag">${v}</span></td>`;
-              if (f.name === 'stock') return `<td class="num ${Number(v) <= 12 ? 'low' : ''}">${v}</td>`;
-              if (typeof v === 'number') return `<td class="num">${v}</td>`;
-              return `<td>${v}</td>`;
-            })
-            .join('')}</tr>`)
-          .join('')
-      : `<tr><td colspan="${fields.length || 1}" class="empty">Aucun produit ne correspond.</td></tr>`;
-  }
-
-  async function loadProducts() {
-    errorBox.textContent = '';
-
-    const params = new URLSearchParams();
-    if (filterFieldSelect.value) {
-      params.set('filterField', filterFieldSelect.value);
-      params.set('filterValue', filterValueInput.value);
-    }
-    params.set('sortField', sortFieldSelect.value);
-    params.set('sortOrder', sortOrderSelect.value);
-
-    renderHead();
-
-    const res = await fetch(`${API_BASE}/api/products?${params.toString()}`);
-    const data = await res.json();
-
-    if (!res.ok) {
-      errorBox.textContent = data.error ?? 'Erreur inconnue';
-      tableBody.innerHTML = '';
-      renderStats([]);
-      return;
-    }
-
-    renderRows(data);
-    renderStats(data);
-  }
-
-  document.getElementById('filter-form').addEventListener('submit', (event) => {
-    event.preventDefault();
-    loadProducts();
-  });
-
-  function setActiveBackendButton() {
-    for (const btn of backendButtons) {
-      btn.setAttribute('aria-pressed', String(btn.dataset.base === API_BASE));
-    }
-  }
-
-  async function connect() {
-    setActiveBackendButton();
-    dot.className = 'dot';
-    backendStatus.textContent = 'détection…';
-    try {
-      await loadFields();
-      backendStatus.textContent = `Backend actif : en ligne sur ${API_BASE}`;
-      await loadProducts();
-    } catch (err) {
-      dot.className = 'dot off';
-      backendStatus.textContent = `Backend injoignable sur ${API_BASE}`;
-      errorBox.textContent = `Impossible de contacter l'API sur ${API_BASE}. Démarrez le backend Node ou Java.`;
-    }
-  }
-
-  for (const btn of backendButtons) {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.base === API_BASE) return;
-      API_BASE = btn.dataset.base;
-      connect();
-    });
-  }
-
-  connect();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
