@@ -129,6 +129,16 @@ document.getElementById('filter-form').addEventListener('submit', (event) => {
   loadProducts();
 });
 
+// Certains navigateurs (Safari notamment) consomment le premier "Entrée"
+// pour fermer la liste de suggestions du champ Valeur au lieu de soumettre
+// le formulaire : on gere donc explicitement la soumission au clavier ici.
+filterValueInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    loadProducts();
+  }
+});
+
 filterFieldSelect.addEventListener('change', updateFilterValueSuggestions);
 
 function setActiveBackendButton() {
