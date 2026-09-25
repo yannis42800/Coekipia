@@ -6,7 +6,8 @@
 <style>
   body { font-family: system-ui, sans-serif; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
   h1 { font-size: 1.3rem; }
-  .backend-badge { font-size: 0.85rem; color: #555; margin-bottom: 1.5rem; }
+  .backend-badge { font-size: 0.85rem; color: #555; }
+  #backend-form { align-items: center; margin-bottom: 1rem; }
   form { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: end; margin-bottom: 1.5rem; }
   label { display: flex; flex-direction: column; font-size: 0.8rem; gap: 0.25rem; }
   select, input, button { padding: 0.4rem; font-size: 0.9rem; }
@@ -19,7 +20,17 @@
 </head>
 <body>
   <h1>Filtrage &amp; tri de produits</h1>
-  <p class="backend-badge">Backend actif : <span id="backend-status">détection…</span></p>
+
+  <form id="backend-form">
+    <label>
+      Backend
+      <select id="backendSelect">
+        <option value="node">Node / TypeScript (:3000)</option>
+        <option value="java">Java (:3001)</option>
+      </select>
+    </label>
+    <span class="backend-badge" id="backend-status">détection…</span>
+  </form>
 
   <form id="filter-form">
     <label>
@@ -54,9 +65,13 @@
     // Contrat commun aux deux backends (Node/TypeScript et Java) :
     //  GET /api/products/fields
     //  GET /api/products?filterField=&filterValue=&sortField=&sortOrder=asc|desc
-    // Le front ne change pas selon le backend lancé sur ce port.
-    const API_BASE = 'http://localhost:3000';
+    // Le front est identique quel que soit le backend choisi ci-dessus, seul le port change.
+    const BACKENDS = {
+      node: 'http://localhost:3000',
+      java: 'http://localhost:3001',
+    };
 
+    const backendSelect = document.getElementById('backendSelect');
     const filterFieldSelect = document.getElementById('filterField');
     const filterValueInput = document.getElementById('filterValue');
     const sortFieldSelect = document.getElementById('sortField');
@@ -68,11 +83,17 @@
 
     let fields = [];
 
+    function apiBase() {
+      return BACKENDS[backendSelect.value];
+    }
+
     async function loadFields() {
-      const res = await fetch(`${API_BASE}/api/products/fields`);
+      const res = await fetch(`${apiBase()}/api/products/fields`);
       const data = await res.json();
       fields = data.fields;
 
+      filterFieldSelect.innerHTML = '<option value="">(aucun)</option>';
+      sortFieldSelect.innerHTML = '';
       for (const field of fields) {
         filterFieldSelect.add(new Option(field.name, field.name));
         sortFieldSelect.add(new Option(field.name, field.name));
@@ -92,7 +113,7 @@
       params.set('sortField', sortFieldSelect.value);
       params.set('sortOrder', sortOrderSelect.value);
 
-      const res = await fetch(`${API_BASE}/api/products?${params.toString()}`);
+      const res = await fetch(`${apiBase()}/api/products?${params.toString()}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -106,21 +127,28 @@
         .join('');
     }
 
+    async function switchBackend() {
+      backendStatus.textContent = 'détection…';
+      errorBox.textContent = '';
+      try {
+        await loadFields();
+        backendStatus.textContent = `en ligne sur ${apiBase()}`;
+        await loadProducts();
+      } catch (err) {
+        backendStatus.textContent = 'injoignable';
+        errorBox.textContent = `Impossible de contacter l'API sur ${apiBase()}. Démarrez ce backend, ou choisissez l'autre.`;
+        tableBody.innerHTML = '';
+      }
+    }
+
+    backendSelect.addEventListener('change', switchBackend);
+
     document.getElementById('filter-form').addEventListener('submit', (event) => {
       event.preventDefault();
       loadProducts();
     });
 
-    (async () => {
-      try {
-        await loadFields();
-        backendStatus.textContent = `en ligne sur ${API_BASE}`;
-        await loadProducts();
-      } catch (err) {
-        backendStatus.textContent = 'injoignable';
-        errorBox.textContent = `Impossible de contacter l'API sur ${API_BASE}. Démarrez le backend Node ou Java.`;
-      }
-    })();
+    switchBackend();
   </script>
 </body>
 </html>

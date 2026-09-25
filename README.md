@@ -11,22 +11,25 @@ production (conception, code, vérification) plutôt que comme simple générate
   (vérifié à la compilation dans les deux langages, cf. détails plus bas).
 - Objet métier `Product` avec **6 propriétés** (`id`, `name`, `category`, `price`,
   `stock`, `rating`).
-- **Deux implémentations**, deux langages : `backend-node` (TypeScript) et
-  `backend-java` (Java, JDK pur).
-- **Un seul front**, qui fonctionne sans modification avec l'un ou l'autre backend.
+- **Deux implémentations**, deux langages : `backend-node` (TypeScript, port 3000) et
+  `backend-java` (Java, JDK pur, port 3001).
+- **Un seul front**, qui fonctionne sans modification avec l'un ou l'autre backend — les
+  deux peuvent tourner **en même temps**, un sélecteur dans le front permet de basculer
+  de l'un à l'autre à la volée.
 
 ## Architecture
 
 ```
-frontend/index.html   <-- front unique (HTML/JS vanilla, aucune dépendance)
-        |
-        |  HTTP (contrat identique)
-        v
-backend-node/   OU   backend-java/   <-- un seul lancé à la fois, sur le port 3000
+                    frontend/index.html (front unique)
+                    sélecteur de backend : Node | Java
+                          |                    |
+                          v                    v
+        backend-node (:3000)          backend-java (:3001)
 ```
 
 Le front ne connaît pas le langage du backend : il consomme un contrat REST identique,
-exposé à l'identique par les deux implémentations.
+exposé à l'identique par les deux implémentations, chacune sur son propre port pour
+pouvoir tourner simultanément.
 
 ### Contrat API commun
 
@@ -82,18 +85,18 @@ par nom de propriété arbitraire.
 
 ## Lancer le projet
 
-Un seul backend à la fois, tous deux sur `http://localhost:3000`.
+Les deux backends peuvent tourner en même temps (ports différents), chacun dans un
+terminal séparé.
 
-### Backend Node/TypeScript
+### Backend Node/TypeScript (port 3000)
 
 ```bash
 cd backend-node
 npm install
 npm run build && npm start
-# ou en dev : npm run dev
 ```
 
-### Backend Java
+### Backend Java (port 3001)
 
 ```bash
 cd backend-java
@@ -105,8 +108,10 @@ java -cp out com.coekipia.filtrage.Server
 ### Front
 
 Ouvrir `frontend/index.html` directement dans un navigateur (double-clic, ou
-`open frontend/index.html`). Il appelle `http://localhost:3000` — aucune configuration
-à changer selon le backend démarré.
+`open frontend/index.html`). Un menu déroulant en haut de page permet de choisir le
+backend interrogé (Node `:3000` ou Java `:3001`) — le front lui-même ne change pas,
+seule la base d'URL utilisée change. Un seul des deux backends suffit pour que le front
+fonctionne ; les lancer tous les deux permet de basculer de l'un à l'autre en direct.
 
 ## Vérifications effectuées
 

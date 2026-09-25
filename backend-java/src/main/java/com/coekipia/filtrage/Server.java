@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
  * Meme contrat HTTP que le backend Node (backend-node/src/server.ts) :
  *  - GET /api/products/fields
  *  - GET /api/products?filterField=&filterValue=&sortField=&sortOrder=asc|desc
- * Le front (frontend/index.html) est identique quel que soit le backend lance.
+ * Le front (frontend/index.html) est identique quel que soit le backend lance ; il
+ * tourne sur un port different (3001) du backend Node (3000) pour que les deux
+ * puissent etre lances en meme temps et etre selectionnes depuis le front.
  */
 public final class Server {
 
-    private static final int PORT = 3000;
+    private static final int PORT = 3001;
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
